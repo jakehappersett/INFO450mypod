@@ -1,0 +1,27 @@
+- Functional Requirements:
+For Assignment 5 you will be creating an application that reads your music play list from a file.
+Once read, you program will present and play (simulation) each song in order.  As each song is presented, the user has the option to Play, Skip 
+or Delete from the play list.
+
+Your program should require the user to enter a full path filename of an existing playlist text file.
+All the entries should be read in, regardless of number of entries.
+Your program should continue to present each song until the user decides to quit.
+If the end of the music list is reached, the program should start over from the beginning of the list and again, present each song in turn to 
+Play, Skip  or Delete.
+If Play is selected the song will play (not really – simulation)
+If Skip is selected the user should enter a number, n and the program will move n songs down the list
+If Delete is selected the song is deleted from the list.  Note: if a song is deleted is should not be present in the list if the list starts 
+over.
+Your program need not write to the file – you can create a text file for this assignment using a text editor (e.g. notepad)    Each line will 
+be one record,  format :  Artist,Song
+
+- Extra Credit:
+Update the program to provide the ability to create the playlist file and save any inserts or deletions back to the file
+
+- Program Requirements:
+Design and implement a proper object oriented program in C++ to support all of the above  functional  requirements.  
+You must use a Single linked list  and read each music entry (node) into the linked list as it is read from the file.
+The linked list should be traversed, starting at the head and presented to the user
+If the user selects ‘delete’, the item should be removed from the linked list
+Define class member data, constructors and member functions as required to fulfill on the requirements.
+The program should use file streams to Read from the music list
