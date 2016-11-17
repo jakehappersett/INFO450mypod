@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -7,19 +8,19 @@ using namespace std;
 
 class node
 {
-	int data;
 	char artist[50];
 	char song[50];
 	node *next;
-	public:
+public:
 	void setnode(char a[], char s[]);
 	void display();
 	friend class linkedList;
 };
 void node::setnode(char a[], char s[])
 {
-	strcpy(artist, a);
-	strcpy(song, s);
+	strcpy_s(artist, a);
+	strcpy_s(song, s);
+	next = NULL;
 }
 void node::display()
 {
@@ -31,11 +32,9 @@ class linkedList
 {
 	node *head;
 	node *tail;
-	public:
+public:
 	linkedList();
 	void addNodeToEnd(node *nptr);
-	void addNodeToHead(node *nptr);
-	int insertAfter(node *ptr, int i);
 	void skipsong(int n);
 	void playsong();
 	int removeNode(char e[]);
@@ -48,96 +47,69 @@ linkedList::linkedList()
 	head = NULL;
 	tail = NULL;
 }
-void linkedList::addNodeToHead(node *ptr)
-{
-	if (head == NULL)
-	{
-			head = ptr;
-			tail = ptr;
-		}
-		else
-		{
-			ptr->next = head;
-			head = ptr; }
-}
 void linkedList::addNodeToEnd(node *ptr)
 {
 	// if list is empty
 	if (head == NULL)
 	{
-			head = ptr;
-			tail = ptr;
-		}
-		else
-		{
-			tail->next = ptr;
-			tail = ptr;
-		}
-}
-int linkedList::insertAfter(node *newnode, int i)
-{
-	node *ptr = head;
-	while (ptr != NULL)
+		head = ptr;
+		tail = ptr;
+	}
+	else
 	{
-			if (ptr->data== i) // found node to insert after
-				{
-						newnode->next = ptr->next;
-						ptr->next = newnode;
-						if (tail == ptr)
-							tail = newnode;
-							return 0;
-					}
-					ptr = ptr->next;
-		}
-		return -1;
+		tail->next = ptr;
+		tail = ptr;
+	}
 }
+
+
 int linkedList::removeNode(char e[])
 {
-	// why when i delete a node in the middle of the list does it remove the artist data
-	// from the node beofre it.;.
+	//this actually works now
 	node *ptr = head;
 	if (ptr == NULL)  // empty list
 		return -1;
 
 
-		// if node is at the head
-		if (strcmp(head->song,e) ==0)
+	// if node is at the head
+	if (strcmp(head->song, e) == 0)
+	{
+		//if only 1 node in the list
+		if (head == tail)
 		{
-			//if only 1 node in the list
-			if (head == tail)
-			{
-				head = NULL;
-				tail = NULL;
-			}
-			else
-				head = head->next;
-				delete ptr;
-				return 0;
-			}
+			head = NULL;
+			tail = NULL;
+		}
+		else
+			head = head->next;
+		delete ptr;
+		return 0;
+	}
 
 
-			while (ptr != NULL)
-			{
-				if (ptr->next &&  (strcmp((ptr->next)->song, e) ==0))
-				{
-					//if its at th eend
-				if(tail == ptr->next)
-					tail = ptr;
-				node *tbd = ptr->next;
-				ptr->next = (ptr->next)->next;
-				delete ptr;
-				return 0;
-				}
-				ptr = ptr->next;
-			}
-			return -1;
+	while (ptr != NULL)
+	{
+		if (ptr->next && (strcmp((ptr->next)->song, e) == 0))
+		{
+			//if its at th eend
+			if (tail == ptr->next)
+				tail = ptr;
+			//something is going on here
+			node *tbd = ptr->next;
+			ptr->next = (ptr->next)->next;
+			delete tbd;
+			return 0;
+		}
+		ptr = ptr->next;
+	}
+	return -1;
 }
 void linkedList::skipsong(int n)
 {
 	//this isn't working anymore :(
 	node *ptr;
 	ptr = head;
-	for (int i; i < n; i++)
+	for (int i=0; i < n; i++)
 	{
 		ptr = ptr->next;
 	}
@@ -161,7 +133,7 @@ void linkedList::whatamievendoingthismakesnosense()
 {
 	node *ptr;
 	ptr = head;
-	while (1==1)
+	while (1 == 1)
 	{
 		char ans;
 		//play song ---- skip song (move n down the list)----- delete song
@@ -192,11 +164,11 @@ void linkedList::whatamievendoingthismakesnosense()
 			//skip forward num times
 			//somethings not working in this forloop
 			for (i; i<num; i++)
-				{
+			{
 				if (ptr == NULL)
 					ptr = head;
 				ptr = ptr->next;
-				}
+			}
 
 		}
 		else if (ans == 'd')
@@ -220,10 +192,13 @@ int main()
 {
 	linkedList *mylist = new linkedList();
 	//node *newnode = new node(4);
-	//char s[]= "/home/jake/450/info450mypod/music";
-	ifstream infile("/home/jake/school/450/info450mypod/music");
+	char s[50];
+	cout << "enter file path" << endl;
+	cin.getline(s, 50);
+	ifstream infile(s);
 	if (!infile)
 	{
+		cout << "didn't work" << endl;
 		return -1;
 	}
 	while (!infile.eof())
@@ -244,14 +219,7 @@ int main()
 		}
 	}
 	infile.close();
-	// mylist->addNodeToEnd(newnode);
-	// mylist->addNodeToEnd(newnode);
-	// mylist->addNodeToEnd(new node(3));
-	// mylist->addNodeToEnd(new node(20));
-	// mylist->addNodeToHead(new node(42));
-	// mylist->insertAfter(new node(11), 3);
-	//mylist->showList();
 	mylist->whatamievendoingthismakesnosense();
 	return 0;
-
 }
+
